@@ -1,6 +1,7 @@
 package sample.member;
 
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -17,10 +18,10 @@ import sample.domain.Member;
 
 @Repository
 public class MemberDaoHibernate implements MemberDao{
-	
+
 	//@Autowired SessionFactory sessionFactory;
-	private HibernateTemplate hibernateTemplate = null;
-	
+	@Autowired HibernateTemplate hibernateTemplate;
+
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory){
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
@@ -30,10 +31,10 @@ public class MemberDaoHibernate implements MemberDao{
 		this.hibernateTemplate = hibernateTemplate;
 	}
 	*/
-	
-	@Transactional(readOnly=true)
+
 	public void add(Member member) {
 		//getSession().save(member);
+		member.setId(new Random().nextInt());
 		hibernateTemplate.save(member);
 	}
 
@@ -78,7 +79,7 @@ public class MemberDaoHibernate implements MemberDao{
 		//		.add(Restrictions.like("name", name))
 		//		.list();
 	}
-	
+
 	//private Session getSession() {
 	//	return sessionFactory.getCurrentSession();
 	//}

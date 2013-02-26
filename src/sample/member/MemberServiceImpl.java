@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sample.domain.Member;
 
-//@Transactional
 @Service
+@Transactional
 public class MemberServiceImpl implements MemberService {
-	
+
 	@Autowired MemberDao dao;
 
-	@Transactional(readOnly=true)//, propagation=Propagation.REQUIRES_NEW)	//propagation=Propagation.SUPPORTS, )	//, rollbackFor={SQLException.class}, propagation = Propagation.REQUIRED, isolation=Isolation.REPEATABLE_READ)
+	@Transactional(readOnly=true, propagation = Propagation.SUPPORTS)//, propagation=Propagation.REQUIRES_NEW)	//propagation=Propagation.SUPPORTS, )	//, rollbackFor={SQLException.class}, propagation = Propagation.REQUIRED, isolation=Isolation.REPEATABLE_READ)
 	public void add(Member member) {
 		member.setJoined(new Date());
 		dao.add(member);
@@ -41,7 +41,7 @@ public class MemberServiceImpl implements MemberService {
 	public void update(Member member) {
 		dao.update(member);
 	}
-	
+
 	//@Transactional(readOnly=true)
 	public List<Member> listByName(String name){
 		return dao.listByName(name);
