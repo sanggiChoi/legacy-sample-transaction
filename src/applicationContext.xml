@@ -20,7 +20,7 @@
 
     <context:property-placeholder location="classpath*:*.properties"/>
 
-<!-- 
+<!--
     <context:component-scan base-package="sample">
  -->
     <context:component-scan base-package="sample">
@@ -30,21 +30,25 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- Hibernate -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource"> 
-		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-		<!-- 
-		<property name="url" value="jdbc:sqlserver://AGlsn:1433;database=Test-1" />
-		 -->
-	 	<property name="url" value="jdbc:sqlserver://192.168.255.192:1433;database=pcloudpersonalvsceo" />
-		<property name="username" value="sa" />
-		<property name="password" value="infra1122!" />
-	</bean>
-	
+	<!--<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">-->
+		<!--<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />-->
+		<!--&lt;!&ndash;-->
+		<!--<property name="url" value="jdbc:sqlserver://AGlsn:1433;database=Test-1" />-->
+		 <!--&ndash;&gt;-->
+	 	<!--<property name="url" value="jdbc:sqlserver://192.168.255.192:1433;database=pcloudpersonalvsceo" />-->
+		<!--<property name="username" value="sa" />-->
+		<!--<property name="password" value="infra1122!" />-->
+	<!--</bean>-->
+
+	<jdbc:embedded-database id="dataSource" type="HSQL">
+		<jdbc:script location="classpath:/script/member_table.sql"/>
+	</jdbc:embedded-database>
+
     <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"><!-- autowire="no"> --> 
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"><!-- autowire="no"> -->
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="sample.domain" />
-        <!-- 
+        <!--
         <property name="mappingDirectoryLocations">
     		<value>classpath:/sample/domain</value>
   		</property>
@@ -53,28 +57,28 @@
 
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect </prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
                 <prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.connection.autocommit">false</prop>
-                <!-- 
+                <!--
                 <prop key="hibernate.current_session_context_class">thread</prop>
                  -->
             </props>
         </property>
     </bean>
-    
+
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-    
+
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
  		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		
-	<!-- 
+
+	<!--
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate3.HibernateTransactionManager"
           p:sessionFactory-ref="sessionFactory"/>

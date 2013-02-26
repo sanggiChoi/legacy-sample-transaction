@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class Member {
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
 	int id;
 
 	@NotNull
@@ -64,5 +64,5 @@ public class Member {
 	 */
 	public void setJoined(Date joined) {
 		this.joined = joined;
-	}	
+	}
 }
